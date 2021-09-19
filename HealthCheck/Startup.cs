@@ -2,17 +2,10 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HealthCheck
 {
@@ -28,7 +21,7 @@ namespace HealthCheck
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks().AddMySql(Configuration["ConnectionStrings:MySqlConnection"], "MySqlStatus");//.AddCheck<CustomHealthChecks>("Health Checks customizavel");
+            services.AddHealthChecks().AddMySql(Configuration["ConnectionStrings:MySqlConnection"], "MySqlStatus");//.AddCheck<CustomHealthChecks>("Custom Health Checks");
 
             services.AddHealthChecksUI(options =>
             {
@@ -72,7 +65,8 @@ namespace HealthCheck
                 ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
             });
 
-            app.UseHealthChecksUI(options => {
+            app.UseHealthChecksUI(options =>
+            {
                 options.UIPath = "/dashboard";
                 options.AddCustomStylesheet("MyStyle.css");
             });
